@@ -1,24 +1,49 @@
+import React, {useState} from 'react'
 import logo from './logo.svg';
 import './App.css';
+import {Switch, Route} from "react-router-dom"
+import Homepage from './Pages/HomePage';
+import { StyledContainer } from './Style/StyledContainer';
+import Navigation from './Components/Navigation';
+import { UserContext } from './contexts/UserContext';
+import AboutPage from './Pages/AboutPage';
+import ProjectPage from './Pages/ProjectPage';
+import ContactPage from './Pages/ContactPage';
+
+
 
 function App() {
+
+  const [isEven, setIsEven] = useState(true)
+  function changeColor (){
+    setIsEven(!isEven)
+    console.log(isEven)
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <UserContext.Provider value={{isEven, setIsEven, changeColor}}>
+      <StyledContainer isEven={isEven}>
+        <div className="content">
+          <div className="main-content">
+            <Switch>
+              <Route path="/omMig">
+                <AboutPage/>
+              </Route>
+              <Route path="/projekt">
+                <ProjectPage/>
+              </Route>
+              <Route path="/kontakt">
+                <ContactPage/>
+              </Route>
+              <Route path="/">
+                <Homepage/>
+              </Route>
+            </Switch>
+          </div>
+          <Navigation/>
+        </div>
+      </StyledContainer>
+    </UserContext.Provider>
   );
 }
 
